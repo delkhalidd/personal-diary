@@ -1,65 +1,65 @@
-//models/Goat.js
+//models/Diary.js
 const db = require('../database/connect')
 
 class Diary {
   constructor(data) {
     this.id = data.id
-    this.name = data.name
-    this.age = data.age
+    this.title = data.title;
+    this.content = data.content;
+    this.date = data.date;
   }
 
   static async getAll() {
-    const response = await db.query("SELECT * FROM goats");
+    const response = await db.query("SELECT * FROM diary");
     if (response.rows.length === 0) {
-      throw new Error("No goats available.")
+      throw new Error("No diary entries available.")
     }
-    return response.rows.map(g => new Goat(g));
+    return response.rows.map(d => new Diary(d));
   }
 
   static async findById(id) {
     try {
-      const goatData = await db.query('SELECT * FROM goats WHERE id = $1', [id])
-      const goat = new Goat(goatData.rows[0]);
-      return goat;
+      const diaryData = await db.query('SELECT * FROM diary WHERE id = $1', [id])
+      if (diaryData.rows.length === 0) throw new Error('This diary entry does not exist!');
+      return new Diary(diaryData.rows[0]);
     } catch (err) {
-      throw new Error('This goat does not exist!');
+      throw new Error('This diary entry does not exist!');
     }
   }
 
   static async create(data) {
-    if (!data.name) { throw new Error("Name is missing") }
+    if (!data.title) { throw new Error("Title is missing") }
+    if (!data.content) { throw new Error("Content is missing") }
+    if (!data.date) { throw new Error("Date is missing") }
 
-    if (!data.age) {
-      throw new Error("age is missing")
-    }
-
-    if (!data.name || !data.age) {
-      throw new Error("age or name missing")
-    }
-
-    const response = await db.query("INSERT INTO goats(name, age) VALUES ($1, $2) RETURNING *", [data.name, data.age])
-    return new Goat(response.rows[0])
+    const response = await db.query(
+      "INSERT INTO diary(title, content, date) VALUES ($1, $2, $3) RETURNING *",
+      [data.title, data.content, data.date]
+    );
+    return new Diary(response.rows[0]);
   }
 
   async update(data) {
-    if (!data.name || !data.age) {
-      throw new Error("age or name missing")
+    if (!data.title || !data.content || !data.date) {
+      throw new Error("Title, content, or date missing")
     }
-
     try {
-      const response = await db.query(" UPDATE goats SET name = $1, age = $2 WHERE id = $3 RETURNING * ", [data.name, data.age, this.id])
-      return new Goat(response.rows[0])
+      const response = await db.query(
+        "UPDATE diary SET title = $1, content = $2, date = $3 WHERE id = $4 RETURNING *",
+        [data.title, data.content, data.date, this.id]
+      );
+      return new Diary(response.rows[0]);
     } catch (err) {
-      throw new Error(err.message)
+      throw new Error(err.message);
     }
   }
 
   async destroy() {
     try {
-      const response = await db.query("DELETE FROM goats WHERE id = $1 RETURNING *", [this.id])
-      return new Goat(response.rows[0])
+      const response = await db.query("DELETE FROM diary WHERE id = $1 RETURNING *", [this.id]);
+      return new Diary(response.rows[0]);
     } catch(err) {
-      throw new Error("Cannot delete.")
+      throw new Error("Cannot delete.");
     }
   }
 }

@@ -22,4 +22,4 @@ npm
 ### Installation
 Clone the repository
 Install dependencies
-npm install
+npm install# personal-diary

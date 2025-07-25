@@ -1,14 +1,14 @@
 const express = require('express')
 const cors = require('cors')
 
-const diaryRoutes = require('./routers/diary')
+const diaryRoutes = require('./routes/diary')
 
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 
-app.use('/goats', diaryRoutes)
+app.use('/diary', diaryRoutes)
 
 app.get('/', (req, res) => {
   res.send({
@@ -16,11 +16,11 @@ app.get('/', (req, res) => {
     description: "DIARY API",
     endpoints: [
       "GET    /            200",
-      "GET    /goats       200",
-      "GET    /goats/:id   200",
-      "POST   /goats       201",
-      "PATCH  /goats/:id   200",
-      "DELETE /goats/:id   204",
+      "GET    /diary       200",
+      "GET    /diary/:id   200",
+      "POST   /diary       201",
+      "PATCH  /diary/:id   200",
+      "DELETE /diary/:id   204",
     ]
   })
 })

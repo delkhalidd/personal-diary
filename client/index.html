@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personal Diary</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📔 My Personal Diary</h1>
+      <button id="newEntryBtn">+ New Entry</button>
+    </header>
+
+    <section id="entryForm" class="hidden">
+      <h2>New Diary Entry</h2>
+      <form id="diaryForm">
+        <label>Date</label>
+        <input type="date" name="date" required />
+
+        <label>Time</label>
+        <input type="time" name="time" required />
+
+        <label>Category</label>
+        <input type="text" name="category" placeholder="e.g. Mood, Work..." required />
+
+        <label>Entry</label>
+        <textarea name="text" rows="6" placeholder="Write your thoughts here..." required></textarea>
+
+        <div class="form-buttons">
+          <button type="submit">Save</button>
+          <button type="button" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="entries">
+      <h2>Entries</h2>
+      <div id="entriesList">
+     
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const newEntryBtn = document.getElementById('newEntryBtn');
+    const entryForm = document.getElementById('entryForm');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    newEntryBtn.onclick = () => entryForm.classList.remove('hidden');
+    cancelBtn.onclick = () => entryForm.classList.add('hidden');
+  </script>
+</body>
+</html>
